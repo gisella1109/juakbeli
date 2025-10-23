@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'screens/splash_screen.dart';
-import 'login_page.dart'; // Langsung import login saja
+import 'intro_splash.dart'; // ✅ ubah path karena file ada langsung di folder lib
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Hilangkan native splash screen secepat mungkin
+
+  // 🔹 Atur tampilan status bar & system UI
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // menyatu dengan background
+    statusBarIconBrightness: Brightness.dark, // ikon status bar gelap
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
+
   runApp(const ITransecApp());
 }
 
@@ -21,10 +26,17 @@ class ITransecApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'I-TransEC',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF22C55E)),
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF22C55E),
+          brightness: Brightness.light,
+        ),
+        fontFamily: 'Poppins', // ✅ font konsisten
       ),
-      home: const LoginPage(), // Langsung ke login, skip splash Flutter
+      home: const IntroSplash(), // ✅ halaman splash baru dengan efek fade-in
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        physics: const BouncingScrollPhysics(),
+      ),
     );
   }
 }
