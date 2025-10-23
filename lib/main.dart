@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'screens/splash_screen.dart';
-import 'home_page.dart'; 
+import 'login_page.dart'; // Langsung import login saja
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Hilangkan native splash screen secepat mungkin
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  
   runApp(const ITransecApp());
 }
 
@@ -18,7 +24,7 @@ class ITransecApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF22C55E)),
         useMaterial3: true,
       ),
-      home: SplashScreen(nextPage: const HomePage()), // 👈 arahkan ke halaman utama
+      home: const LoginPage(), // Langsung ke login, skip splash Flutter
     );
   }
 }

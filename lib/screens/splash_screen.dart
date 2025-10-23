@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // ✅ untuk font poppins
+import '../login_page.dart';
 
 class SplashScreen extends StatefulWidget {
-  final Widget nextPage; // halaman tujuan setelah splash
-  const SplashScreen({super.key, required this.nextPage});
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -11,26 +10,34 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _ac =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
-  late final Animation<double> _fade = CurvedAnimation(parent: _ac, curve: Curves.easeOut);
+  late final AnimationController _ac = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 800),
+  );
+  late final Animation<double> _fade = CurvedAnimation(
+    parent: _ac,
+    curve: Curves.easeOut,
+  );
+
+  bool _navigated = false;
 
   @override
   void initState() {
     super.initState();
     _ac.forward();
-    // Auto masuk ke halaman utama setelah delay
-    Future.delayed(const Duration(milliseconds: 1400), () {
-      if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 300),
-          pageBuilder: (_, __, ___) => widget.nextPage,
-          transitionsBuilder: (_, anim, __, child) =>
-              FadeTransition(opacity: anim, child: child),
-        ),
-      );
-    });
+    _navigateToLogin();
+  }
+
+  void _navigateToLogin() async {
+    await Future.delayed(const Duration(milliseconds: 2000));
+    
+    if (!mounted || _navigated) return;
+    
+    _navigated = true;
+    
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
   }
 
   @override
@@ -40,52 +47,59 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   @override
-  Widget build(BuildContext context) {
-    final shortest = MediaQuery.of(context).size.shortestSide;
-    final logoSize = shortest * 0.28; // responsive logo size
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Center(
-          child: FadeTransition(
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // ← TAMBAH INI
+        children: [
+          // Logo dari assets dengan FadeTransition
+          FadeTransition(
             opacity: _fade,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // 🖼️ Logo
-                Image.asset(
-                  'assets/splash/logo.png',
-                  width: logoSize,
-                  height: logoSize,
-                ),
-                const SizedBox(height: 24),
-                // 🪴 Judul utama
-                Text(
-                  'I-TransEC',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700, // Bold
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                // 🌱 Tagline
-                Text(
-                  'Hitung Emisimu Selamatkan Bumi',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500, // Medium
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
+            child: Image.asset(
+              'assets/splash/logo.png',
+              width: 140,
+              height: 140,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(Icons.eco, size: 140, color: Colors.green);
+              },
             ),
           ),
-        ),
+          const SizedBox(height: 24),
+          
+          // Text "I-TransEC" dengan FadeTransition
+          FadeTransition(
+            opacity: _fade,
+            child: const Text(
+              'I-TransEC',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          
+          // Subtitle dengan FadeTransition
+          FadeTransition(
+            opacity: _fade,
+            child: const Text(
+              'Hitung Emisimu Selamatkan Bumi',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

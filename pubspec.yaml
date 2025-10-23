@@ -24,4 +24,4 @@ flutter:
 
   assets:
     - assets/splash/
-    - assets/images/
+    # - assets/images/  # Folder ini tidak ada, jadi di-comment
