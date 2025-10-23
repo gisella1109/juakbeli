@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'login_page.dart'; // ✅ Halaman login
+import '../login_page.dart'; // ✅ Halaman login
 
 class IntroSplash extends StatefulWidget {
   const IntroSplash({super.key});
