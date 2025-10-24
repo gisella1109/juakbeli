@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:i_transec/profil_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -505,21 +506,6 @@ class SimulasiPage extends StatelessWidget {
       backgroundColor: Color(0xFFE8F5E9),
       body: Center(
         child: Text("🗺️ Halaman Simulasi Perjalanan",
-            style: TextStyle(fontSize: 18)),
-      ),
-    );
-  }
-}
-
-class ProfilPage extends StatelessWidget {
-  const ProfilPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFFE8F5E9),
-      body: Center(
-        child: Text("👤 Halaman Profil Pengguna",
             style: TextStyle(fontSize: 18)),
       ),
     );

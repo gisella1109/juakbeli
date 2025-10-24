@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../login_page.dart'; // ✅ Halaman login
+import '../login_page.dart';
 
 class IntroSplash extends StatefulWidget {
   const IntroSplash({super.key});
@@ -21,34 +21,30 @@ class _IntroSplashState extends State<IntroSplash>
   void initState() {
     super.initState();
 
-    // 🔹 Controller animasi utama
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
     );
 
-    // 🔹 Animasi fade & scale logo
     _fadeLogo = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0.0, 0.6, curve: Curves.easeInOut),
     );
 
-    _scaleLogo = Tween<double>(begin: 0.85, end: 1.0).animate(
+    _scaleLogo = Tween<double>(begin: 0.9, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
         curve: const Interval(0.0, 0.6, curve: Curves.easeOutBack),
       ),
     );
 
-    // 🔹 Animasi fade teks
     _fadeText = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.6, 1.0, curve: Curves.easeIn),
+      curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
     );
 
     _controller.forward();
 
-    // 🔹 Setelah animasi + loading selesai → ke LoginPage
     Timer(const Duration(seconds: 5), () {
       if (!mounted) return;
       Navigator.pushReplacement(
@@ -57,7 +53,6 @@ class _IntroSplashState extends State<IntroSplash>
           transitionDuration: const Duration(milliseconds: 600),
           pageBuilder: (_, __, ___) => const LoginPage(),
           transitionsBuilder: (_, animation, __, child) {
-            // efek slide lembut ke kanan
             return SlideTransition(
               position: Tween<Offset>(
                 begin: const Offset(1, 0),
@@ -73,7 +68,6 @@ class _IntroSplashState extends State<IntroSplash>
       );
     });
 
-    // 🔹 Atur status bar
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -98,22 +92,22 @@ class _IntroSplashState extends State<IntroSplash>
             children: [
               const Spacer(flex: 2),
 
-              // 🔹 Logo dengan animasi fade + scale
+              // 🔹 Logo
               FadeTransition(
                 opacity: _fadeLogo,
                 child: ScaleTransition(
                   scale: _scaleLogo,
                   child: Image.asset(
                     'assets/splash/logo.png',
-                    width: 180,
+                    width: 150,
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 4), // 🔸 jarak lebih rapat ke teks
 
-              // 🔹 Teks muncul menyusul
+              // 🔹 Teks
               FadeTransition(
                 opacity: _fadeText,
                 child: Column(
@@ -121,17 +115,17 @@ class _IntroSplashState extends State<IntroSplash>
                     Text(
                       'I-TransEC',
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
-                        letterSpacing: 1.2,
+                        letterSpacing: 0.8,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 4),
                     Text(
                       'Hitung Emisimu, Selamatkan Bumi 🌍',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13,
                         color: Colors.black54,
                         fontStyle: FontStyle.italic,
                       ),
@@ -141,14 +135,14 @@ class _IntroSplashState extends State<IntroSplash>
                 ),
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 22),
 
-              // 🔹 Animasi loading (berputar)
+              // 🔹 Loading
               FadeTransition(
                 opacity: _fadeText,
                 child: const SizedBox(
-                  width: 40,
-                  height: 40,
+                  width: 34,
+                  height: 34,
                   child: CircularProgressIndicator(
                     strokeWidth: 3,
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
